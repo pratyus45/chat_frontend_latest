@@ -50,17 +50,11 @@ export const AuthProvider = ({ children }) => {
     // Login function to handle user authentication and socket connection
 const login = async (state, credentials) => {
     try {
-        const { data } = await axios.post(
-            `/api/auth/${state}`,
-            credentials,
-            {
-                withCredentials: true // ✅ this tells axios to send/receive cookies
-            }
-        );
+        const { data } = await axios.post(`/api/auth/${state}`, credentials);
 
         if (data.success) {
-            setAuthUser(data.userData); 
-            connectSocket(data.userData); 
+            setAuthUser(data.userData); // Fix: use data.user instead of data.userData
+            connectSocket(data.userData); // Fix: use data.user instead of data.userData
             axios.defaults.headers.common["token"] = data.token;
             setToken(data.token);
             localStorage.setItem("token", data.token);
